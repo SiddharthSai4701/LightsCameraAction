@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 /**
- * Definethe schema for the movie resource to be stored in the db
+ * Define the schema for the movie resource to be stored in the db
  */
 
 const movieSchema = new mongoose.Schema({
@@ -24,10 +24,10 @@ const movieSchema = new mongoose.Schema({
     language: {
         type: [String],
         required: true,
-        default: "English"
+        default: ["English"]
     },
     releaseDate: {
-        type: String,
+        type: Date,
         required: true
     },
     director: {
@@ -37,6 +37,7 @@ const movieSchema = new mongoose.Schema({
     releaseStatus: {
         type: String,
         required: true,
+        enum: ['RELEASED', 'UNRELEASED', 'BLOCKED'],
         default: "RELEASED"
     },
 }, {
