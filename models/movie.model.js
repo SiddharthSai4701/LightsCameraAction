@@ -5,6 +5,10 @@ const mongoose = require('mongoose')
  */
 
 const movieSchema = new mongoose.Schema({
+    movieID: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -27,7 +31,7 @@ const movieSchema = new mongoose.Schema({
         default: ["English"]
     },
     releaseDate: {
-        type: String,
+        type: Date,
         required: true
     },
     director: {

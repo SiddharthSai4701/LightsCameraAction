@@ -2,7 +2,7 @@ const express = require('express');
 const env = require('dotenv')
 const mongoose = require('mongoose')
 
-const movieRouter = require('./routes/movie.route')
+const movieRouter = require('./routes/movie.routes')
 
 env.config()
 const app = express(); // express object

@@ -8,5 +8,6 @@ const router = express.Router();
  * Description: Create a new movie
  */
 router.post('/', movieController.createMovie);
+router.get('/:id', movieController.getMovie);
 
 module.exports = router;
