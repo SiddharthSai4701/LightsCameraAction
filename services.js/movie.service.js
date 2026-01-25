@@ -1,8 +1,19 @@
 const movieModel = require('../models/movie.model')
 
 const createMovie = async (data) => {
-    const movie = await movieModel.create(data);
-    return movie;
+    try {
+        const movie = await movieModel.create(data);
+        return movie;
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            const message = Object.values(error.errors).map(val => val.message).join(', ');
+            return {
+                err: message,
+                status: 422
+            }
+        }
+        throw error;
+    }
 }
 
 
@@ -18,6 +29,10 @@ const getMovieById = async (id) => {
     }
 
     return movie
+}
+
+const updateMovieById = async (id, movie) => {
+    
 }
 
 const deleteMovieById = async (id) => {

@@ -15,7 +15,8 @@ const movieSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        minLength: 2
     },
     cast: {
         type: [String],

@@ -2,7 +2,7 @@ const movieModel = require('../models/movie.model')
 const {successResponseBody, errorResponseBody } = require('../utils/response')
 const movieService = require('../services.js/movie.service')
 
-const { uuid } = require('uuidv4');
+const { v4 } = require('uuid');
 
 
 /**
@@ -12,17 +12,23 @@ const { uuid } = require('uuidv4');
  * @returns Movie created
  */
 const createMovie = async (req, res) => {
-    req.body.movieID = uuid();
+    req.body.movieID = v4();
     try {
         
-        const movie = await movieService.createMovie(req.body)
+        const response = await movieService.createMovie(req.body)
 
-        successResponseBody.data = movie
+        if(response.err) {
+            errorResponseBody.err = response.err;
+            return res.status(response.status).json(errorResponseBody);
+        }
+
+        successResponseBody.data = response
         successResponseBody.message = 'Successfully created a new movie'
 
         return res.status(201).json(successResponseBody)
         
     } catch (error) {
+        // console.log(error.errors.description)
         return res.status(500).json(errorResponseBody)
     }
 }
@@ -34,9 +40,7 @@ const getMovie = async (req, res) => {
 
         if (response.err) {
             errorResponseBody.err = response.err
-            return res.status(response.status).json({
-                errorResponseBody
-            })
+            return res.status(response.status).json(errorResponseBody)
         }
 
         successResponseBody.message = 'Successfully deleted movie'
