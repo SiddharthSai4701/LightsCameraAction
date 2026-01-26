@@ -1,6 +1,6 @@
 const movieModel = require('../models/movie.model')
-const {successResponseBody, errorResponseBody } = require('../utils/response')
-const movieService = require('../services.js/movie.service')
+const { makeSuccessResponse, makeErrorResponse } = require('../utils/response')
+const movieService = require('../services/movie.service')
 
 const { v4 } = require('uuid');
 
@@ -18,18 +18,13 @@ const createMovie = async (req, res) => {
         const response = await movieService.createMovie(req.body)
 
         if(response.err) {
-            errorResponseBody.err = response.err;
-            return res.status(response.status).json(errorResponseBody);
+            return res.status(response.status).json(makeErrorResponse(response.err));
         }
 
-        successResponseBody.data = response
-        successResponseBody.message = 'Successfully created a new movie'
-
-        return res.status(201).json(successResponseBody)
+        return res.status(201).json(makeSuccessResponse(response, 'Successfully created a new movie'))
         
     } catch (error) {
-        // console.log(error.errors.description)
-        return res.status(500).json(errorResponseBody)
+        return res.status(500).json(makeErrorResponse(error.message))
     }
 }
 
@@ -39,33 +34,46 @@ const getMovie = async (req, res) => {
         const response = await movieService.getMovieById(req.params.id);
 
         if (response.err) {
-            errorResponseBody.err = response.err
-            return res.status(response.status).json(errorResponseBody)
+            return res.status(response.status).json(makeErrorResponse(response.err))
         }
 
-        successResponseBody.message = 'Successfully deleted movie'
-        successResponseBody.data = response
-
-        return res.status(200).json(successResponseBody)
+        return res.status(200).json(makeSuccessResponse(response, 'Successfully fetched movie'))
 
     } catch (error) {
         console.log(error)
-        errorResponseBody.err = error
-        return res.status(500).json(errorResponseBody)
+        return res.status(500).json(makeErrorResponse(error.message))
+    }
+}
+
+const updateMovie = async (req, res) => {
+    try {
+        const response = await movieService.updateMovieById(req.params.id, req.body)
+
+        if (response?.err) {
+            return res.status(response.status).json(makeErrorResponse(response.err))
+        }
+
+        return res.status(200).json(makeSuccessResponse(response, 'Successfully updated movie'))
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json(makeErrorResponse(error.message))
     }
 }
 
 const deleteMovie = async (req, res) => {
     try {
         const response = await movieService.deleteMovieById(req.params.id)
-        successResponseBody.data = response
-        successResponseBody.message = "Successfully deleted movie"
-        return res.status(200).json(successResponseBody) 
+        
+        if (response?.err) {
+             return res.status(response.status).json(makeErrorResponse(response.err))
+        }
+
+        return res.status(200).json(makeSuccessResponse(response, 'Successfully deleted movie')) 
 
     } catch (error) {
         console.log(error)
-        return res.status(500).json(errorResponseBody)
+        return res.status(500).json(makeErrorResponse(error.message))
     }
 }
 
-module.exports = { createMovie, getMovie, deleteMovie };
+module.exports = { createMovie, getMovie, updateMovie, deleteMovie };
