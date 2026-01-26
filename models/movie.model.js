@@ -7,7 +7,9 @@ const mongoose = require('mongoose')
 const movieSchema = new mongoose.Schema({
     movieID: {
         type: String,
-        required: true
+        required: true,
+        unique: true,
+        index: true
     },
     name: {
         type: String,

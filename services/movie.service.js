@@ -33,7 +33,8 @@ const getMovieById = async (id) => {
 
 const updateMovieById = async (id, data) => {
     try {
-        const movie = await movieModel.findOneAndUpdate({ movieID: id }, data, { new: true, runValidators: true });
+        const { name, description, cast, trailerUrl, language, releaseDate, director, releaseStatus } = data
+        const movie = await movieModel.findOneAndUpdate({ movieID: id }, { name, description, cast, trailerUrl, language, releaseDate, director, releaseStatus }, { new: true, runValidators: true });
         
         if (!movie) {
             return {
@@ -44,7 +45,6 @@ const updateMovieById = async (id, data) => {
         
         return movie
     } catch (error) {
-        let err = {}
         if (error.name === 'ValidationError') {
             const message = Object.values(error.errors).map(val => val.message).join(', ');
             return {
@@ -57,9 +57,12 @@ const updateMovieById = async (id, data) => {
 }
 
 const deleteMovieById = async (id) => {
-    const response = await movieModel.deleteOne({ movieID: id })
     
-    if(response.deletedCount === 0) {
+    // deleteOne returns the deleted count
+    // findOneAndDelete returns the deleted document
+    const response = await movieModel.findOneAndDelete({ movieID: id })
+    
+    if(!response) {
         return {
             err: "No movie found with this ID to delete",
             status: 404

@@ -1,4 +1,3 @@
-const movieModel = require('../models/movie.model')
 const { makeSuccessResponse, makeErrorResponse } = require('../utils/response')
 const movieService = require('../services/movie.service')
 
@@ -49,7 +48,7 @@ const updateMovie = async (req, res) => {
     try {
         const response = await movieService.updateMovieById(req.params.id, req.body)
 
-        if (response?.err) {
+        if (response.err) {
             return res.status(response.status).json(makeErrorResponse(response.err))
         }
 
