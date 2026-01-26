@@ -12,6 +12,7 @@ router.post('/',
     movieMiddleware.validateMovieCreateRequest,
     movieController.createMovie);
 router.get('/:id', movieController.getMovie);
+router.get('/', movieController.getMovies) 
 router.put('/:id', movieController.updateMovie)
 router.delete('/:id', movieController.deleteMovie)
 

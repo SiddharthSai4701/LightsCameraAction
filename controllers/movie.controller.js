@@ -63,7 +63,7 @@ const deleteMovie = async (req, res) => {
     try {
         const response = await movieService.deleteMovieById(req.params.id)
         
-        if (response?.err) {
+        if (response.err) {
              return res.status(response.status).json(makeErrorResponse(response.err))
         }
 
@@ -75,4 +75,18 @@ const deleteMovie = async (req, res) => {
     }
 }
 
-module.exports = { createMovie, getMovie, updateMovie, deleteMovie };
+const getMovies = async (req, res) => {
+    try {
+        const response = await movieService.getMovies(req.query);
+
+        if(res.error) {
+            return res.status(404).json(makeErrorResponse(response.err))
+        }
+
+        return res.status(200).json(makeSuccessResponse(response, "Here are your movies"))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+module.exports = { createMovie, getMovie, updateMovie, deleteMovie, getMovies };

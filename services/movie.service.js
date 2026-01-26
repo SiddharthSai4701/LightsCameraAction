@@ -56,6 +56,25 @@ const updateMovieById = async (id, data) => {
     }
 }
 
+const getMovies = async (filter) => {
+    const query = {}
+
+    if(filter.name) {
+        query.name = filter.name
+    }
+
+    const movies = await movieModel.find(query)
+
+    if(!movies) {
+        return {
+            err: "No movies found",
+            status: 404
+        }
+    }
+
+    return movies
+}
+
 const deleteMovieById = async (id) => {
     
     // deleteOne returns the deleted count
@@ -76,5 +95,6 @@ module.exports = {
     getMovieById,
     createMovie,
     updateMovieById,
-    deleteMovieById
+    deleteMovieById,
+    getMovies
 }
