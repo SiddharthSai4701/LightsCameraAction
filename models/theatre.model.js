@@ -4,6 +4,12 @@ const mongoose = require('mongoose')
  */
 
 const theatreSchema = new mongoose.Schema({
+    theatreID: {
+        type: String,
+        required: true,
+        unique: true,
+        index: true
+    },
     name: {
         type: String,
         required: true
@@ -14,11 +20,11 @@ const theatreSchema = new mongoose.Schema({
         required: true
     },
     pincode: {
-        typr: Number,
+        type: Number,
         required: true
     },
     address: String
 }, {timestamps: true})
 
-const Theatre = mongoose.Model('Theatre', theatreSchema)
+const Theatre = mongoose.model('Theatre', theatreSchema)
 module.exports = Theatre

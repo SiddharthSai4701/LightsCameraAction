@@ -3,6 +3,7 @@ const env = require('dotenv')
 const mongoose = require('mongoose')
 
 const movieRouter = require('./routes/movie.routes')
+const theatreRouter = require('./routes/theatre.routes')
 
 env.config()
 const app = express(); // express object
@@ -17,6 +18,7 @@ app.get("/home", (req, res) => {
 })
 
 app.use('/mba/api/v1/movies', movieRouter)
+app.use('/mba/api/v1/theatres', theatreRouter)
 
 const startServer = async () => {
     try {
